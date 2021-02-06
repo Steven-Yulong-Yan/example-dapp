@@ -5,52 +5,19 @@ import { Input, Button} from 'antd'
 import ERC20 from '../libs/erc20/erc20';
 import Web3 from 'web3';
 import axios from "axios";
+import {sortBalances} from "../util/helpers";
+import {TokenList} from "./TokenList";
+import {networkConfig} from "../App.Config";
 
-const BASE_URL = 'https://web3api.io/api/v1/'
+const url = networkConfig["1"].default_url
 
-let config = {
-  headers: {"x-api-key": "UAK000000000000000000000000demo0001"}
+const config = {
+  headers: networkConfig["2"]
 }
 
 const extractData = (data) => data.data.payload
 
-const getCurrentTokenBalances = (address) => axios.get(`${BASE_URL}addresses/${address}/tokens`, config)
-
-let getAmount = (token) => token.amount / Math.pow(10, token.decimals)
-
-let round = (n, digits) => Number.parseFloat(n).toFixed(digits)
-
-let sortBalances = (balances) =>
-  balances.sort((a, b) => {
-    if (getAmount(a) > getAmount(b))
-      return -1
-    if (getAmount(a) < getAmount(b))
-      return 1
-    return 0
-  }).slice(0, 5)
-
-const TokenList = ({ tokens }) => {
-  return (
-    <>
-      {
-        /*
-        This is just syntactic sugar for React.Fragment which essentially acts as a div
-        without the applied styles of a div
-        */
-      }
-      {tokens.map(token =>
-        <div className="token" data-address={token.address} data-name={token.name}>
-          <div className="name item">
-            ${token.name} (${token.symbol})
-          </div>
-          <div className="value item">
-            Amount: ${round(getAmount(token), 2)}
-          </div>
-        </div>
-      )}
-    </>
-  )
-}
+const getCurrentTokenBalances = (address) => axios.get(`${url}addresses/${address}/tokens`, config)
 
 export const populate = async (address) => {
   const balances = extractData(await getCurrentTokenBalances(address))
@@ -83,17 +50,17 @@ const Instructions = styled(({
 
   const [tokens, setTokens] = useState([]);
 
-  console.log(tokens, "Token list");
-
   useEffect(() => {
     async function onLoad() {
       const query = window.location.search.replace('?', '')
       console.log(query)
+
       const address = query === '' ? '0xd1dE80930227C56eE8bB2049e4D36bFf4161163E' : query
       console.log(address)
 
       const tokens = await populate(address)
       setTokens(tokens);
+      console.log(tokens)
     }
     onLoad();
   }, []);
