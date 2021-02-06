@@ -23,7 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 
 yarn.lock
-/.idea/.gitignore
-/.idea/example-dapp.iml
-/.idea/modules.xml
-/.idea/vcs.xml
+/.idea
+/.eslintcache
