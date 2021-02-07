@@ -81,7 +81,7 @@ const Instructions = styled(({
       </div>
       <p>Balance: {balance}</p>
 
-      <div className="header">Owned Tokens:</div>
+      <div className="header">Owned Tokens/Contract Addresses:</div>
 
       <TokenList tokens={tokens} />
     </>
