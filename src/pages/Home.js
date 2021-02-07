@@ -8,6 +8,7 @@ import axios from "axios";
 import {sortBalances} from "../util/helpers";
 import {TokenList} from "./TokenList";
 import {networkConfig} from "../App.Config";
+import "./Home.css";
 
 const url = networkConfig["1"].default_url
 
@@ -79,6 +80,8 @@ const Instructions = styled(({
           <Button onClick={handleClick}>Get Pickle Balance</Button>
       </div>
       <p>Balance: {balance}</p>
+
+      <div className="header">Owned Tokens:</div>
 
       <TokenList tokens={tokens} />
     </>
